@@ -35,6 +35,8 @@ ctx.fillStyle = "#006400";
 stop = false
 x = 100
 tps = 30
+var onGroundTime = 3
+dropping = false
 var nextTick
 ctx.fillRect(100, x, 40, 40);
 function gameLoop() {
@@ -49,8 +51,14 @@ function gameLoop() {
 }
 document.addEventListener('keypress', keypress);
 function keypress(e) {
-	if (e.code == "Space") {
+	if (e.code == "Space" && x == 100 && onGroundTime >= 50) {
 		x = 50;
+		if (dropping == false)
+		setTimeout(function() {
+			x = 100
+			dropping = true
+		},750)
+		
 	}
 	if (e.code == "Escape") {
 		stop = true;
@@ -59,5 +67,12 @@ function keypress(e) {
 function tick() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.fillRect(100, x, 40, 40);
+	if (x == 100) {
+		dropping = false
+		onGroundTime += 1
+	}
+	else {
+		onGroundTime = 0
+	}
 }
 gameLoop();
